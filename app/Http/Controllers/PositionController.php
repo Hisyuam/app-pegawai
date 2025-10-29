@@ -13,7 +13,8 @@ class PositionController extends Controller
      */
     public function index()
     {
-        //
+        $positions = Position::all();
+        return view('positions.index', compact('positions'));
     }
 
     /**
@@ -21,7 +22,7 @@ class PositionController extends Controller
      */
     public function create()
     {
-        //
+        return view('positions.create');
     }
 
     /**
@@ -29,7 +30,13 @@ class PositionController extends Controller
      */
     public function store(StorePositionRequest $request)
     {
-        //
+        $request->validate([
+            'nama_jabatan' => 'required|max:100',
+            'gaji_pokok' => 'required|numeric'
+        ]);
+
+        Position::create($request->all());
+        return redirect()->route('positions.index')->with('success', 'Jabatan berhasil ditambahkan.');
     }
 
     /**
@@ -45,7 +52,7 @@ class PositionController extends Controller
      */
     public function edit(Position $position)
     {
-        //
+        return view('positions.edit', compact('position'));
     }
 
     /**
@@ -53,7 +60,13 @@ class PositionController extends Controller
      */
     public function update(UpdatePositionRequest $request, Position $position)
     {
-        //
+        $request->validate([
+            'nama_jabatan' => 'required|max:100',
+            'gaji_pokok' => 'required|numeric'
+        ]);
+
+        $position->update($request->all());
+        return redirect()->route('positions.index')->with('success', 'Jabatan berhasil diperbarui.');
     }
 
     /**
@@ -61,6 +74,8 @@ class PositionController extends Controller
      */
     public function destroy(Position $position)
     {
-        //
+        $position->delete();
+        return redirect()->route('positions.index')->with('success', 'Jabatan berhasil dihapus.');
     }
+    
 }

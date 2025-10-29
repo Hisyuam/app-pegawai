@@ -1,56 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h2>Edit Data Pegawai</h2> 
-<form action="{{ route('employees.update', $employee->id) }}" method="POST"> 
-    @csrf 
-    @method('PUT') 
-    <table> 
-        <tr> 
-            <td>Nama Lengkap</td> 
-            <td><input type="text" name="nama_lengkap" value="{{ old('nama_lengkap', $employee->nama_lengkap) }}"></td> 
-        </tr> 
-        <tr> 
-            <td>Email</td> 
-            <td><input type="email" name="email" value="{{ old('email', $employee->email) }}"></td> 
-        </tr> 
-        <tr> 
-            <td>Nomor Telepon</td> 
-            <td><input type="text" name="nomor_telepon" value="{{ old('nomor_telepon', $employee->nomor_telepon) }}"></td> 
-        </tr> 
-        <tr> 
-            <td>Tanggal Lahir</td> 
-            <td><input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir', $employee->tanggal_lahir) }}"></td> 
-        </tr> 
-        <tr> 
-            <td>Alamat</td> 
-            <td><input type="text" name="alamat" value="{{ old('alamat', $employee->alamat) }}"></td> 
-        </tr> 
-        <tr> 
-            <td>Tanggal Masuk</td> 
-            <td><input type="date" name="tanggal_masuk" value="{{ old('tanggal_masuk', $employee->tanggal_masuk) }}"></td> 
-        </tr> 
-        <tr> 
-            <td>Status</td> 
-            <td> 
-                <select name="status"> 
-                    <option value="aktif" {{ old('status', $employee->status) == 'aktif' ? 'selected' : '' }}>Aktif</option> 
-                    <option value="tidak aktif" {{ old('status', $employee->status) == 'tidak aktif' ? 'selected' : '' }}>Tidak Aktif</option> 
-                </select> 
-            </td> 
-        </tr> 
-        <tr> 
-            <td colspan="2"> 
-                <button type="submit">Update</button> 
-            </td> 
-        </tr> 
-        </table> 
-</form> 
-</body>
-</html>
+@extends('master')
+@section('title', 'Edit Pegawai')
+@section('content')
+
+<div class="container mt-4">
+    <h2 class="mb-4">Edit Data Pegawai</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form action="{{ route('employees.update', $employee->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="mb-3">
+                    <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap"
+                           value="{{ old('nama_lengkap', $employee->nama_lengkap) }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email"
+                           value="{{ old('email', $employee->email) }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="nomor_telepon" class="form-label">Nomor Telepon</label>
+                    <input type="text" class="form-control" id="nomor_telepon" name="nomor_telepon"
+                           value="{{ old('nomor_telepon', $employee->nomor_telepon) }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                    <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir"
+                           value="{{ old('tanggal_lahir', $employee->tanggal_lahir) }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="alamat" class="form-label">Alamat</label>
+                    <textarea class="form-control" id="alamat" name="alamat" rows="3" required>{{ old('alamat', $employee->alamat) }}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
+                    <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk"
+                           value="{{ old('tanggal_masuk', $employee->tanggal_masuk) }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="status" required>
+                        <option value="aktif" {{ old('status', $employee->status) == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                        <option value="nonaktif" {{ old('status', $employee->status) == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                    </select>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <a href="{{ route('employees.index') }}" class="btn btn-secondary me-2">Batal</a>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@endsection

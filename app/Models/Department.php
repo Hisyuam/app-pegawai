@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
-    /** @use HasFactory<\Database\Factories\DepartmentFactory> */
     use HasFactory;
+
+    protected $fillable = ['nama_departemen'];
+}
+
+// app/Models/Position.php
+class Position extends Model
+{
+    protected $fillable = ['nama_jabatan'];
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Models\Department;
+use App\Models\Position;
 
 class EmployeeController extends Controller
 {
@@ -12,7 +14,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::latest()->paginate(5); 
+        $employees = Employee::with(['departemen', 'jabatan'])
+        ->latest()->paginate(5); 
         return view('employees.index', compact('employees'));
     }
 
@@ -96,5 +99,32 @@ class EmployeeController extends Controller
         $employee = Employee::find($id); 
         $employee->delete(); 
         return redirect()->route('employees.index'); 
-    } 
+    }
+        
+    
+    public function assignForm($id)
+    {
+        $employee = Employee::findOrFail($id);
+        $departemens = Department::all();
+        $jabatans = Position::all();
+
+        return view('employees.assign', compact('employee', 'departemens', 'jabatans'));
+    }
+
+    // SIMPAN hasil assign
+    public function assignSave(Request $request, $id)
+    {
+        $request->validate([
+            'departemen_id' => 'required|exists:departments,id',
+            'jabatan_id' => 'required|exists:positions,id',
+        ]);
+
+        $employee = Employee::findOrFail($id);
+        $employee->update([
+            'departemen_id' => $request->departemen_id,
+            'jabatan_id' => $request->jabatan_id,
+        ]);
+
+        return redirect()->route('employees.index')->with('success', 'Jabatan dan Departemen berhasil diassign.');
+    }
 }
